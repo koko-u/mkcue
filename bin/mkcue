@@ -1,0 +1,5 @@
+#!/usr/bin/env ruby
+require File.expand_path('../../lib/mkcue', __FILE__)
+puts MkCue.new(:device => '/dev/cdrom',
+               :email  => 'kozaki.tsuneaki@gmail.com').cue_sheet
+
