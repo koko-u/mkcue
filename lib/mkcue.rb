@@ -1,5 +1,4 @@
 require 'open-uri'
-require 'ir_b'
 
 MustSpecifyEmailAddress = Class.new(ArgumentError)
 MustInsertCDtoDrive = Class.new(StandardError)
@@ -57,19 +56,19 @@ class MkCue
     @cddb[/^DGENRE=(.+)\r$/, 1]
   end
   def album_artist
-    @cddb[%r!^DTITLE=([^/]+) / (.+)\r$!, 1]
+    @cddb[%r!^DTITLE=([^/]+)/(.+)\r$!, 1].strip
   end
   def album_title
-    @cddb[%r!^DTITLE=([^/]+) / (.+)\r$!, 2]
+    @cddb[%r!^DTITLE=([^/]+)/(.+)\r$!, 2].strip
   end
   def track_artist(n)
-    @cddb[%r!^TTITLE#{n}=([^/]+) / (.+)\r$!, 1]
+    @cddb[%r!^TTITLE#{n}=([^/]+)/(.+)\r$!, 1].strip
   end
   def track_title(n)
     if track_artist(n).nil?
-      @cddb[%r!^TTITLE#{n}=(.+)\r$!, 1]
+      @cddb[%r!^TTITLE#{n}=(.+)\r$!, 1].strip
     else
-      @cddb[%r!^TTITLE#{n}=([^/]+) / (.+)\r$!, 2]
+      @cddb[%r!^TTITLE#{n}=([^/]+)/(.+)\r$!, 2].strip
     end
   end
 
