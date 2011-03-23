@@ -62,7 +62,7 @@ class MkCue
     @cddb[%r!^DTITLE=([^/]+)/(.+)\r$!, 2].strip
   end
   def track_artist(n)
-    @cddb[%r!^TTITLE#{n}=([^/]+)/(.+)\r$!, 1].strip
+    @cddb[%r!^TTITLE#{n}=([^/]*\S)\s*/(.*\S)\s*\r$!, 1]
   end
   def track_title(n)
     if track_artist(n).nil?
