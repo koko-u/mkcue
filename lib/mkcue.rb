@@ -47,28 +47,28 @@ class MkCue
   end
 
   def year
-    @cddb[/^DYEAR=(\d{4})/, 1]
+    @cddb[/^DYEAR=(\d{4})/, 1] || ""
   end
   def discid
-    @cddb[/^DISCID=(\w{8})/, 1]
+    @cddb[/^DISCID=(\w{8})/, 1] || ""
   end
   def genre
-    @cddb[/^DGENRE=(.+)\r$/, 1]
+    @cddb[/^DGENRE=(.+)\r$/, 1] || ""
   end
   def album_artist
-    @cddb[%r!^DTITLE=([^/]+)/(.+)\r$!, 1].strip
+    (@cddb[%r!^DTITLE=([^/]+)/(.+)\r$!, 1] || "").strip
   end
   def album_title
-    @cddb[%r!^DTITLE=([^/]+)/(.+)\r$!, 2].strip
+    (@cddb[%r!^DTITLE=([^/]+)/(.+)\r$!, 2] || "").strip 
   end
   def track_artist(n)
-    @cddb[%r!^TTITLE#{n}=([^/]*\S)\s*/(.*\S)\s*\r$!, 1]
+    @cddb[%r!^TTITLE#{n}=([^/]*\S)\s*/(.*\S)\s*\r$!, 1] || ""
   end
   def track_title(n)
     if track_artist(n).nil?
-      @cddb[%r!^TTITLE#{n}=(.+)\r$!, 1].strip
+      (@cddb[%r!^TTITLE#{n}=(.+)\r$!, 1] || "").strip
     else
-      @cddb[%r!^TTITLE#{n}=([^/]+)/(.+)\r$!, 2].strip
+      (@cddb[%r!^TTITLE#{n}=([^/]+)/(.+)\r$!, 2] || "").strip
     end
   end
 
