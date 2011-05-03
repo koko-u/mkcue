@@ -65,7 +65,7 @@ class MkCue
     @cddb[%r!^TTITLE#{n}=([^/]*\S)\s*/(.*\S)\s*\r$!, 1] || ""
   end
   def track_title(n)
-    if track_artist(n).nil?
+    if track_artist(n).empty?
       (@cddb[%r!^TTITLE#{n}=(.+)\r$!, 1] || "").strip
     else
       (@cddb[%r!^TTITLE#{n}=([^/]+)/(.+)\r$!, 2] || "").strip
@@ -80,7 +80,7 @@ class MkCue
 <<TRACK
   TRACK #$1 AUDIO
     TITLE "#{track_title(track_no)}"
-    PERFORMER "#{track_artist(track_no).nil? ? album_artist : track_artist(track_no)}"
+    PERFORMER "#{track_artist(track_no).empty? ? album_artist : track_artist(track_no)}"
     INDEX #$2 #$3
 TRACK
 .chomp
