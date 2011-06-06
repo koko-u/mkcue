@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 require 'open-uri'
 
 MustSpecifyEmailAddress = Class.new(ArgumentError)
@@ -56,20 +57,22 @@ class MkCue
     @cddb[/^DGENRE=(.+)\r$/, 1] || ""
   end
   def album_artist
-    (@cddb[%r!^DTITLE=([^/]+)/(.+)\r$!, 1] || "").strip
+    escape_quote( (@cddb[%r!^DTITLE=([^/]+)/(.+)\r$!, 1] || "").strip )
   end
   def album_title
-    (@cddb[%r!^DTITLE=([^/]+)/(.+)\r$!, 2] || "").strip 
+    escape_quote( (@cddb[%r!^DTITLE=([^/]+)/(.+)\r$!, 2] || "").strip )
   end
   def track_artist(n)
-    @cddb[%r!^TTITLE#{n}=([^/]*\S)\s*/(.*\S)\s*\r$!, 1] || ""
+    escape_quote( @cddb[%r!^TTITLE#{n}=([^/]*\S)\s*/(.*\S)\s*\r$!, 1] || "" )
   end
   def track_title(n)
-    if track_artist(n).empty?
-      (@cddb[%r!^TTITLE#{n}=(.+)\r$!, 1] || "").strip
-    else
-      (@cddb[%r!^TTITLE#{n}=([^/]+)/(.+)\r$!, 2] || "").strip
-    end
+    escape_quote (
+      if track_artist(n).empty?
+        (@cddb[%r!^TTITLE#{n}=(.+)\r$!, 1] || "").strip
+      else
+        (@cddb[%r!^TTITLE#{n}=([^/]+)/(.+)\r$!, 2] || "").strip
+      end
+    )
   end
 
   def update_cuesheet(cue_sheet)
@@ -99,4 +102,15 @@ HEADER
     cue_sheet.replace(header + cue_sheet)
   end
 
+  def escape_quote(str)
+    is_open = false
+    str.each_char.map do |c|
+      if c == "\""
+        is_open = !is_open
+        is_open ? "“" : "”"
+      else
+        c
+      end
+    end.join
+  end
 end
